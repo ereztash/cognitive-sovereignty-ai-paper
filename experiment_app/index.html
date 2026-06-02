@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cognitive Sovereignty Study — Session 1</title>
+
+  <!-- jsPsych 8 core + plugins (CDN). Pin exact versions for a real launch and
+       test in a browser first. Major-version ranges used here for resilience. -->
+  <script src="https://unpkg.com/jspsych@8"></script>
+  <link href="https://unpkg.com/jspsych@8/css/jspsych.css" rel="stylesheet" />
+  <script src="https://unpkg.com/@jspsych/plugin-html-button-response@2"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-instructions@2"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-survey-likert@2"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-survey-multi-choice@2"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-survey-multi-select@2"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-survey-text@2"></script>
+  <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe@0.5"></script>
+
+  <link href="css/style.css" rel="stylesheet" />
+</head>
+<body></body>
+
+<!-- Order matters: config + data, then the timeline that uses them. -->
+<script src="js/config.js"></script>
+<script src="js/scales.js"></script>
+<script src="js/stimuli.js"></script>
+<script src="js/experiment.js"></script>
+</html>
