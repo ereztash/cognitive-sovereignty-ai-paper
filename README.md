@@ -67,6 +67,23 @@ contribution live in `docs/` and `scripts/`:
 python scripts/power_analysis.py
 ```
 
+### Analysis pipeline (dry run on synthetic data)
+
+`scripts/experiment/` runs the **entire study analysis end-to-end on synthetic
+data** generated under the pre-registered assumptions: it builds a participant
+dataset, validates the CSS scale (reliability, factor structure, convergent/
+discriminant validity), and runs every confirmatory test (H1–H4, Holm-corrected).
+
+```bash
+python scripts/experiment/run_experiment.py
+```
+
+> The outputs in `results/experiment/` and `figures/experiment/` are **SYNTHETIC**
+> — a dry run that validates the analysis is correct and analyzable, **not**
+> empirical findings. To analyze a real study, replace
+> `results/experiment/synthetic_participants.csv` with real data of the same
+> schema and re-run. See `results/experiment/REPORT.md`.
+
 ## Working title
 
 From Cognitive Offloading to Cognitive Sovereignty: A Computational-Metacognitive Model of Human-AI Thinking

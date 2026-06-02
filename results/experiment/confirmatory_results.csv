@@ -1,0 +1,7 @@
+test,hypothesis,estimate,ci95,d,stat,df,p_raw,p_holm,decision
+H1a perf: Uncal > NoAI,H1,0.352,"[0.04, 0.67]",0.337,2.2,169.0,0.0145,0.0289,supported
+H1b sov: Uncal < NoAI,H1,-0.6,"[-0.83, -0.37]",-0.776,-5.07,168.9,0.0,0.0,supported
+H3a sov: Fort > Uncal,H3,0.622,"[0.37, 0.87]",0.75,4.89,165.7,0.0,0.0,supported
+H3b comp: Fort > Uncal,H3,0.58,"[0.37, 0.79]",0.849,5.54,165.5,0.0,0.0,supported
+H2: offload x calibration -> retention,H2,0.487,,,2.43,,0.0158,0.0289,supported
+H4: knowledge -> AI-error detection,H4,0.087,,,4.04,,0.0001,0.0002,supported
