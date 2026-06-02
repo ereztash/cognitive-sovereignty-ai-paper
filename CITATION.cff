@@ -1,5 +1,10 @@
-﻿condition,performance_mean,critical_thinking_mean,sovereignty_mean,productive_effort_mean,performance_sovereignty_gap
-Calibrated AI,0.707,0.999,0.716,0.6,-0.01
-Fortified AI,0.743,1.0,0.903,0.847,-0.16
-No AI,0.483,1.0,0.719,1.0,-0.236
-Uncalibrated AI,0.566,0.429,0.254,0.178,0.312
+cff-version: 1.2.0
+title: "From Cognitive Offloading to Cognitive Sovereignty"
+message: "If you use this repository, please cite it using the metadata from this file."
+type: software
+authors:
+  - family-names: Tal-Shir
+    given-names: Erez
+date-released: 2026-06-02
+repository-code: "https://github.com/ereztash/cognitive-sovereignty-ai-paper"
+license: MIT
