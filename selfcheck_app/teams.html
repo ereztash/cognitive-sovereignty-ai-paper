@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cognitive Sovereignty — for teams, classes & researchers</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <main id="app">
+    <div class="card">
+      <h1>For teams, classes &amp; researchers</h1>
+      <p class="lead">Generate a tagged link for your cohort. Every response taken
+      through it is labelled with your group name, so you can summarise it later.</p>
+
+      <label class="field">Group name
+        <input id="group" type="text" placeholder="e.g. Bio101-Fall25 or AcmeTeamA" />
+      </label>
+      <button id="gen" class="btn">Create group link</button>
+
+      <div id="out" style="display:none;margin-top:18px">
+        <div class="note"><b>Your link:</b><br /><code id="link"></code></div>
+        <button id="copy" class="btn ghost">Copy link</button>
+      </div>
+
+      <div class="note teams" style="margin-top:22px">
+        <b>Then summarise the results:</b> export the responses CSV from your
+        DataPipe/OSF component and run
+        <code>python scripts/selfcheck/summarize_groups.py your_export.csv</code>
+        to get per-group scores, a comparison, and a figure.
+      </div>
+      <p class="muted small">Reflective self-assessment, not a validated/diagnostic
+      instrument. Collect informed consent appropriate to your context.</p>
+    </div>
+  </main>
+
+  <script>
+    const base = new URL(".", location.href).href; // .../selfcheck/
+    const out = document.getElementById("out");
+    const linkEl = document.getElementById("link");
+    document.getElementById("gen").addEventListener("click", () => {
+      const g = document.getElementById("group").value.trim();
+      if (!g) return;
+      linkEl.textContent = base + "?group=" + encodeURIComponent(g);
+      out.style.display = "block";
+    });
+    document.getElementById("copy").addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(linkEl.textContent); document.getElementById("copy").textContent = "Copied!"; }
+      catch (e) { /* clipboard unavailable */ }
+    });
+  </script>
+</body>
+</html>

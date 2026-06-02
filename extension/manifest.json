@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Fortified AI — keep your thinking",
+  "version": "0.1.0",
+  "description": "Adds gentle metacognitive gates (predict first, then critique) to your AI chats so you stay sharp. All local; no data leaves your browser.",
+  "permissions": ["storage"],
+  "host_permissions": ["https://chatgpt.com/*", "https://chat.openai.com/*"],
+  "action": { "default_popup": "popup.html", "default_title": "Fortified AI" },
+  "content_scripts": [
+    {
+      "matches": ["https://chatgpt.com/*", "https://chat.openai.com/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}
