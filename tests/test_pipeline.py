@@ -163,6 +163,30 @@ def test_app_defines_three_conditions():
         assert c in cfg
 
 
+# ---- self-check app static checks -------------------------------------------
+SELF = ROOT / "selfcheck_app"
+
+
+def _selfcheck_items():
+    text = (SELF / "js" / "items.js").read_text()
+    return re.findall(r'id:\s*"(css_\d\d)",\s*facet:\s*"(\w+)",\s*reverse:\s*(true|false)', text)
+
+
+def test_selfcheck_items_match_config():
+    items = _selfcheck_items()
+    assert [i[0] for i in items] == [f"css_{n:02d}" for n in range(1, 21)]
+    assert {i[0] for i in items if i[2] == "true"} == set(C.REVERSE_ITEMS)
+
+
+def test_selfcheck_facets_valid():
+    text = (SELF / "js" / "items.js").read_text()
+    facet_keys = set(re.findall(r'(\w+):\s*\{\s*label:\s*"', text))
+    facets = [i[1] for i in _selfcheck_items()]
+    assert len(facet_keys) == 5 and set(facets).issubset(facet_keys)
+    from collections import Counter
+    assert set(Counter(facets).values()) == {4}   # 4 items per facet
+
+
 # ---- runner -----------------------------------------------------------------
 def main():
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]
