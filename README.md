@@ -84,6 +84,21 @@ python scripts/experiment/run_experiment.py
 > `results/experiment/synthetic_participants.csv` with real data of the same
 > schema and re-run. See `results/experiment/REPORT.md`.
 
+### Tests and robustness
+
+```bash
+python tests/test_pipeline.py                      # 16 checks: stats, scoring, schema, app
+python scripts/experiment/robustness_check.py      # recovery rate across many datasets
+```
+
+`tests/test_pipeline.py` verifies the statistics helpers against known values,
+the CSS scoring, the data schema, end-to-end effect recovery, and app/config
+consistency. `robustness_check.py` re-runs the pipeline across 100 synthetic
+datasets at several sample sizes and reports how reliably each hypothesis is
+recovered — empirically cross-checking `scripts/power_analysis.py` (main
+contrasts reach ~80% power near n≈60/group, while the H2 moderation test needs
+more, consistent with the closed-form analysis).
+
 ## Working title
 
 From Cognitive Offloading to Cognitive Sovereignty: A Computational-Metacognitive Model of Human-AI Thinking

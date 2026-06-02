@@ -6,6 +6,9 @@ Runs the exact analysis plan from docs/preregistration_template.md:
   H3  Fortified vs Uncalibrated: sovereignty up AND composite up
   H4  foundational knowledge -> AI-error detection (buffering)
 Primary contrast family is Holm-corrected. Results are SYNTHETIC.
+
+`prepare()` and `confirmatory()` are importable (used by tests / robustness);
+`main()` reads the canonical dataset and writes tables + figures.
 """
 import numpy as np
 import pandas as pd
@@ -19,25 +22,20 @@ from analyze_scale import score_items
 OUTS = ["performance", "sovereignty", "retention", "transfer", "reconstruction"]
 
 
-def main():
-    df = pd.read_csv(C.DATA)
-    df = df[df["attn_pass"]].copy()                       # pre-registered exclusion
+def prepare(df):
+    """Apply the pre-registered exclusion and derive scored / standardized columns."""
+    df = df[df["attn_pass"]].copy()
     df["sovereignty"] = score_items(df).mean(axis=1)
     for col in OUTS:
         df[col + "_z"] = zscore(df[col])
     df["composite"] = (df["performance_z"] + df["sovereignty_z"]) / 2
+    return df
 
+
+def confirmatory(df):
+    """Return the Holm-corrected confirmatory results table (no file IO)."""
     def arm(c, col):
         return df.loc[df["condition"] == c, col]
-
-    desc = df.groupby("condition").agg(
-        n=("participant_id", "count"),
-        performance=("performance", "mean"), sovereignty=("sovereignty", "mean"),
-        retention=("retention", "mean"), transfer=("transfer", "mean"),
-        reconstruction=("reconstruction", "mean"), miscalibration=("miscalibration", "mean"),
-        ai_error_detection=("ai_error_detection", "mean"),
-    ).round(3).reindex(C.CONDITIONS)
-    desc.to_csv(C.RESULTS / "descriptives_by_condition.csv")
 
     tests = []
 
@@ -56,7 +54,6 @@ def main():
     add("H3b comp: Fort > Uncal", "H3",
         welch_test(arm("Fortified AI", "composite"), arm("Uncalibrated AI", "composite"), +1))
 
-    # H2: retention ~ offload * calibration (interaction)
     d2 = df.dropna(subset=["retention"]).copy()
     d2["offload"] = d2["condition"].map(C.OFFLOAD)
     oc = d2["offload"] - d2["offload"].mean()
@@ -65,7 +62,6 @@ def main():
     h2 = ols(d2["retention"].values, X2,
              ["intercept", "offload", "calibration", "offload x calibration"])["offload x calibration"]
 
-    # H4: AI-error detection ~ knowledge (AI arms only), with knowledge x fortified
     d4 = df[df["condition"] != "No AI"].dropna(subset=["ai_error_detection"]).copy()
     fort = (d4["condition"] == "Fortified AI").astype(float)
     kc = d4["knowledge_z"] - d4["knowledge_z"].mean()
@@ -85,7 +81,21 @@ def main():
     res["p_holm"] = holm(res["p_raw"].values).round(4)
     res["p_raw"] = res["p_raw"].round(4)
     res["decision"] = np.where(res["p_holm"] < C.ALPHA, "supported", "n.s.")
+    return res
+
+
+def main():
+    df = prepare(pd.read_csv(C.DATA))
+    res = confirmatory(df)
     res.to_csv(C.RESULTS / "confirmatory_results.csv", index=False)
+
+    desc = df.groupby("condition").agg(
+        n=("participant_id", "count"), performance=("performance", "mean"),
+        sovereignty=("sovereignty", "mean"), retention=("retention", "mean"),
+        transfer=("transfer", "mean"), reconstruction=("reconstruction", "mean"),
+        miscalibration=("miscalibration", "mean"), ai_error_detection=("ai_error_detection", "mean"),
+    ).round(3).reindex(C.CONDITIONS)
+    desc.to_csv(C.RESULTS / "descriptives_by_condition.csv")
 
     anova = [dict(outcome=col, **{k: round(v, 4) for k, v in
              one_way_anova([df.loc[df.condition == c, col] for c in C.CONDITIONS]).items()})
