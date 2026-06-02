@@ -54,6 +54,19 @@ The next empirical step is a controlled study comparing three conditions:
 2. Uncalibrated AI
 3. Fortified AI with metacognitive calibration gates
 
+## Research roadmap
+
+Starter materials for turning the framework into a citable empirical
+contribution live in `docs/` and `scripts/`:
+
+- `docs/cognitive_sovereignty_scale_v0.md` — draft Cognitive Sovereignty Scale (CSS) item pool + a validation roadmap (content validity → EFA/CFA → behavioral criterion validity).
+- `docs/preregistration_template.md` — pre-registration draft (hypotheses, design, measures, analysis plan) ready to time-stamp on OSF/AsPredicted before data collection.
+- `scripts/power_analysis.py` — simulation-based power analysis that estimates the per-group sample size needed for the planned study; writes `results/power_analysis.csv` and `figures/power_curve.png`.
+
+```bash
+python scripts/power_analysis.py
+```
+
 ## Working title
 
 From Cognitive Offloading to Cognitive Sovereignty: A Computational-Metacognitive Model of Human-AI Thinking
