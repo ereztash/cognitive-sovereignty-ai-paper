@@ -34,6 +34,8 @@ jobs:
           mkdir -p public/selfcheck && cp -r selfcheck_app/. public/selfcheck/
           mkdir -p public/study && cp -r experiment_app/. public/study/
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true   # enable Pages via the API so CI works without manual setup
       - uses: actions/upload-pages-artifact@v3
         with:
           path: public
