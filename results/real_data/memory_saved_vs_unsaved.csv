@@ -1,0 +1,4 @@
+experiment,recall_saved,recall_unsaved,saved_beta_adj,t,p_raw,d_uncontrolled,n_trials
+Exp1,0.516,0.861,-0.145,-5.73,0.0,-0.82,1607
+Exp2a,0.504,0.889,-0.247,-9.23,0.0,-0.94,1596
+Exp2b,0.468,0.857,-0.189,-8.49,0.0,-0.94,2369
