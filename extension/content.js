@@ -100,8 +100,13 @@
       PROCESSED.add(id);
     });
     fab();
-    new MutationObserver(() => { try { scan(); } catch (e) {} })
-      .observe(document.body, { childList: true, subtree: true });
+    let scheduled = false;                       // coalesce mutation bursts into one scan per frame
+    const schedule = () => {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(() => { scheduled = false; try { scan(); } catch (e) {} });
+    };
+    new MutationObserver(schedule).observe(document.body, { childList: true, subtree: true });
   }
   init();
 })();

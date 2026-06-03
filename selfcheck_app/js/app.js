@@ -99,8 +99,13 @@ function renderIntro() {
       <label class="consent"><input type="checkbox" id="consent" />
         I'm 18+ and agree to take part anonymously.</label>
       <button id="start" class="btn" disabled>Start</button>
-      ${GROUP ? `<p class="muted">Group: ${GROUP}</p>` : ""}
     </div>`;
+  if (GROUP) {                                   // untrusted ?group= -> textContent, never innerHTML (no XSS)
+    const p = document.createElement("p");
+    p.className = "muted";
+    p.textContent = "Group: " + GROUP;
+    APP.querySelector(".card").appendChild(p);
+  }
   const cb = document.getElementById("consent");
   const start = document.getElementById("start");
   cb.addEventListener("change", () => { start.disabled = !cb.checked; });

@@ -1,11 +1,14 @@
 name: Deploy site to GitHub Pages
 
-# One-time setup: repo Settings -> Pages -> Build and deployment -> Source =
-# "GitHub Actions". Then every push to the branches below publishes the site.
+# IMPORTANT one-time setup (cannot be done from CI -- the GITHUB_TOKEN is not
+# allowed to create a Pages site): repo Settings -> Pages -> Build and deployment
+# -> Source = "GitHub Actions". After that, pushes to main (or a manual run via
+# the Actions tab) publish the site. Deploys run only from main on purpose:
+# Pages has a single live site, so feature branches must not publish to it.
 
 on:
   push:
-    branches: [main, claude/relaxed-dijkstra-cT3q3]
+    branches: [main]
     paths:
       - "landing/**"
       - "selfcheck_app/**"
@@ -20,7 +23,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:

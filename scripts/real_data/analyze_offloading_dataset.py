@@ -50,13 +50,26 @@ EXPERIMENTS = {"Exp1": "rawData_Experiment1.mat", "Exp2a": "rawData_Experiment2a
                "Exp2b": "rawData_Experiment2b.mat", "Exp3": "rawData_Experiment3.mat"}
 
 
+def _safe_extractall(tar, dest):
+    """Extract only members that stay within `dest` (guards against path traversal)."""
+    dest = Path(dest).resolve()
+    for member in tar.getmembers():
+        target = (dest / member.name).resolve()
+        if target != dest and dest not in target.parents:
+            raise ValueError(f"Blocked unsafe tar member: {member.name}")
+    try:
+        tar.extractall(dest, filter="data")      # extra hardening on Python 3.12+
+    except TypeError:
+        tar.extractall(dest)
+
+
 def ensure_data():
     if DATA_DIR.exists():
         return
     print("Downloading real dataset (Hu, Luo & Fleming 2019) ...")
     raw = urllib.request.urlopen(TARBALL, timeout=120).read()
     with tarfile.open(fileobj=io.BytesIO(raw), mode="r:gz") as tar:
-        tar.extractall(DATA_DIR.parent)
+        _safe_extractall(tar, DATA_DIR.parent)
     print(f"  extracted to {DATA_DIR}")
 
 
