@@ -1,19 +1,18 @@
 name: Deploy site to GitHub Pages
 
-# IMPORTANT one-time setup (cannot be done from CI -- the GITHUB_TOKEN is not
+# REQUIRED one-time setup (cannot be done from CI -- the GITHUB_TOKEN is not
 # allowed to create a Pages site): repo Settings -> Pages -> Build and deployment
-# -> Source = "GitHub Actions". After that, pushes to main (or a manual run via
-# the Actions tab) publish the site. Deploys run only from main on purpose:
-# Pages has a single live site, so feature branches must not publish to it.
+# -> Source = "GitHub Actions".
+#
+# This workflow is MANUAL ON PURPOSE. Until Pages is enabled, an automatic run
+# could only fail (configure-pages cannot create the site), so it does not run on
+# push and never reports a red build. After enabling Pages, publish by clicking
+# "Run workflow" on the Actions tab. To switch back to auto-deploy on main, add
+# this under "on:" :
+#     push:
+#       branches: [main]
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "landing/**"
-      - "selfcheck_app/**"
-      - "experiment_app/**"
-      - ".github/workflows/deploy-pages.yml"
   workflow_dispatch:
 
 permissions:
