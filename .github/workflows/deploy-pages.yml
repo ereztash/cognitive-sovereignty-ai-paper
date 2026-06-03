@@ -38,7 +38,7 @@ jobs:
           mkdir -p public/study && cp -r experiment_app/. public/study/
       - uses: actions/configure-pages@v5
         with:
-          enablement: true   # enable Pages via the API so CI works without manual setup
+          enablement: true   # no-op once Pages is enabled in Settings (token cannot create it)
       - uses: actions/upload-pages-artifact@v3
         with:
           path: public
